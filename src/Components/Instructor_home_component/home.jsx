@@ -49,11 +49,11 @@ function Assignment() {
   const [searchTerm, setSearchTerm] = useState('');
 
   const assignmentsData = [
-    { studentName: 'Ashutosh', studentId: '155258', email: 'ashutosh@example.com', status: 'Submitted', file: '/files/assignment1.pdf' },
-    { studentName: 'Navneet', studentId: '165482', email: 'navneet@example.com', status: 'Pending', file: '/files/assignment2.pdf' },
-    { studentName: 'Brijesh', studentId: '245756', email: 'brijesh@example.com', status: 'Submitted', file: '/files/assignment3.pdf' },
-    { studentName: 'Sanskar', studentId: '854625', email: 'sanskar@example.com', status: 'Late Submission', file: '/files/assignment4.pdf' },
-    { studentName: 'Riya', studentId: '136428', email: 'riya@example.com', status: 'Pending', file: '/files/assignment5.pdf' },
+    { studentName: 'Ashutosh', studentId: '155258', email: 'ashutosh@example.com', status: 'Active', file: '/files/assignment1.pdf' },
+    { studentName: 'Navneet', studentId: '165482', email: 'navneet@example.com', status: 'Active', file: '/files/assignment2.pdf' },
+    { studentName: 'Brijesh', studentId: '245756', email: 'brijesh@example.com', status: 'InActive', file: '/files/assignment3.pdf' },
+    { studentName: 'Sanskar', studentId: '854625', email: 'sanskar@example.com', status: 'Active', file: '/files/assignment4.pdf' },
+    { studentName: 'Riya', studentId: '136428', email: 'riya@example.com', status: 'InActive', file: '/files/assignment5.pdf' },
   ];
 
   const filteredAssignments = assignmentsData.filter((assignment) =>
@@ -67,7 +67,7 @@ function Assignment() {
       {/* Heading */}
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-base sm:text-lg md:text-xl lg:text-3xl font-bold text-slate-900">
-          Assignments
+          Dashboard
         </h1>
       </div>
 
@@ -108,10 +108,8 @@ function Assignment() {
                   <td className="p-4">{assignment.email}</td>
                   <td className="p-4">
                     <span className={`font-medium ${
-                      assignment.status === 'Submitted'
+                      assignment.status === 'Active'
                         ? 'text-green-600'
-                        : assignment.status === 'Pending'
-                        ? 'text-yellow-600'
                         : 'text-red-600'
                     }`}>
                       {assignment.status}
@@ -121,7 +119,7 @@ function Assignment() {
                     <a
                       href={assignment.file}
                       download
-                      className="inline-flex items-center gap-1 bg-cyan-500 text-white px-2 py-1 rounded hover:bg-cyan-600 transition whitespace-nowrap"
+                      className="inline-flex items-center gap-1 bg-[#49BBBD] text-white px-2 py-1 rounded hover:bg-[#49BBBD] transition whitespace-nowrap"
                     >
                       <FiDownload className="w-4 h-4" />
                       Download

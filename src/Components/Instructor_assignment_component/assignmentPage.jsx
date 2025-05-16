@@ -159,7 +159,7 @@ function Home() {
       {/* Heading */}
       <div className="flex items-center justify-between mb-8 mt-2">
         <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-slate-900">
-          Dashboard
+          Assignments
         </h1>
       </div>
 
