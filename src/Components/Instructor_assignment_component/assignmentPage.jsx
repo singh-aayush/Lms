@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FiDownload } from "react-icons/fi";
 import SearchBar from '../Instructor_assignment_component/searchBar';
 
 function Home() {
@@ -133,18 +134,20 @@ function Home() {
               </span>
             </p>
             <p className="mt-2">
-              {assignment.file ? (
-                <a
-                  href={assignment.file}
-                  download
-                  className="inline-block text-blue-600 font-medium hover:underline"
-                >
-                  Download
-                </a>
-              ) : (
-                <span className="text-gray-400">No File</span>
-              )}
-            </p>
+  {assignment.file ? (
+    <a
+      href={assignment.file}
+      download
+      className="inline-flex items-center gap-2 text-white font-medium px-3 py-1 rounded bg-[#49BBBD] hover:opacity-90 transition"
+    >
+      <FiDownload className="text-lg" />
+      Download
+    </a>
+  ) : (
+    <span className="text-gray-400">No File</span>
+  )}
+</p>
+
           </div>
         ))}
       </div>

@@ -34,13 +34,33 @@ function Assignment() {
         </h1>
       </div>
 
-      {/* Course Filter */}
+     {/* Search */}
+<div className="mb-6">
+  <div className="relative w-full">
+    <input
+      type="text"
+      placeholder="Search by name, ID, or email..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      className="w-full p-3 pr-24 border-2 border-gray-300 rounded-md text-black focus:outline-none text-sm sm:text-sm md:text-base"
+    />
+    <button
+      onClick={handleSearch} // Replace this with your actual search function
+      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#49BBBD] text-white px-4 py-2 rounded-md text-sm"
+    >
+      Search
+    </button>
+  </div>
+</div>
+
+
+       {/* Course Filter */}
       <div className="mb-4">
         <label className="block mb-1 font-medium">Filter by Course</label>
         <select
           value={selectedCourse}
           onChange={(e) => setSelectedCourse(e.target.value)}
-          className="w-full p-2 border-2 border-gray-300 rounded-md text-black focus:outline-none"
+          className="w-[25%] p-2 border-2 border-gray-300 rounded-md text-black focus:outline-none"
         >
           {uniqueCourses.map((course, index) => (
             <option key={index} value={course}>
@@ -48,19 +68,6 @@ function Assignment() {
             </option>
           ))}
         </select>
-      </div>
-
-      {/* Search */}
-      <div className="mb-6">
-        <div className="relative w-full">
-          <input
-            type="text"
-            placeholder="Search by name, ID, or email..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-3 pr-24 border-2 border-gray-300 rounded-md text-black focus:outline-none text-sm sm:text-sm md:text-base"
-          />
-        </div>
       </div>
 
       {/* Table for medium+ screens */}
