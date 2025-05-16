@@ -138,7 +138,7 @@ function Home() {
     <a
       href={assignment.file}
       download
-      className="inline-flex items-center gap-2 text-white font-medium px-3 py-1 rounded bg-[#49BBBD] hover:opacity-90 transition"
+      className="inline-flex items-center gap-2 text-white font-medium px-3 py-1 cursor-pointer rounded bg-[#49BBBD] hover:opacity-90 transition"
     >
       <FiDownload className="text-lg" />
       Download
