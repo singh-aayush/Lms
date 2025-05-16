@@ -68,7 +68,7 @@ function CreateCourse() {
               onClick={() => setActiveTab(tab)}
               className={`pb-2 pr-4 sm:pr-0 border-b-2 text-sm sm:text-base cursor-pointer ${
                 activeTab === tab
-                  ? 'border-teal-600 text-teal-600 font-medium'
+                  ? 'bg-[#49BBBD] text-teal-600 font-medium'
                   : 'border-transparent text-gray-500'
               }`}
             >

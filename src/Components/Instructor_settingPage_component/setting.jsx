@@ -128,7 +128,7 @@ const InstructorSettings = () => {
             <div className="text-center sm:text-right">
               <button
                 onClick={() => setIsEditing(true)}
-                className="mt-2 sm:mt-0 px-5 py-2 bg-cyan-500 text-white rounded-full hover:bg-cyan-600 transition cursor-pointer"
+                className="mt-2 sm:mt-0 px-5 py-2 bg-[#49BBBD] text-white rounded-full hover:bg-[#49BBBD] transition cursor-pointer"
               >
                 Edit Profile
               </button>
@@ -206,7 +206,7 @@ const InstructorSettings = () => {
                   <button
                     type="button"
                     onClick={handleAddExpertise}
-                    className="px-3 py-2 bg-cyan-500 text-white rounded-lg hover:bg-cyan-600 cursor-pointer"
+                    className="px-3 py-2 bg-[#49BBBD] text-white rounded-lg hover:bg-[#49BBBD] cursor-pointer"
                   >
                     Add
                   </button>
@@ -288,13 +288,13 @@ const InstructorSettings = () => {
                   setIsEditing(false);
                   setPreviewImage(null);
                 }}
-                className="px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-gray-100 cursor-pointer"
+                className="px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-[#49BBBD] cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="flex items-center gap-2 px-4 py-2 bg-cyan-500 text-white rounded-full hover:bg-cyan-600 cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 bg-cyan-500 text-white rounded-full hover:bg-[#49BBBD] cursor-pointer"
               >
                 <Save className="w-4 h-4" />
                 Save

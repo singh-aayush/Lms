@@ -90,7 +90,7 @@ const TopicEditor = ({ topic, updateTopic }) => {
       <div className="flex flex-wrap gap-4">
         {/* Only for Theory */}
         {type === "Theory" && (
-          <label className="flex items-center gap-2 border border-gray-300 rounded-md px-4 py-2 cursor-pointer hover:bg-gray-50">
+          <label className="flex items-center gap-2 border border-gray-300 rounded-md px-4 py-2 cursor-pointer hover:bg-[#49BBBD]">
             📹 Add video
             <input
               type="file"
@@ -116,7 +116,7 @@ const TopicEditor = ({ topic, updateTopic }) => {
         {/* Only for Theory */}
         {type === "Theory" && (
           <>
-            <button className="border border-gray-300 rounded-md px-4 py-2 hover:bg-gray-50">
+            <button className="border border-gray-300 rounded-md px-4 py-2 hover:bg-[#49BBBD]">
               🔗 Add link
             </button>
           </>
@@ -136,7 +136,7 @@ const TopicEditor = ({ topic, updateTopic }) => {
       <div className="flex justify-end mt-6">
         <button
           onClick={handleSave}
-          className="bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-teal-700 cursor-pointer"
+          className="bg-[#49BBBD] text-white px-6 py-2 rounded-md hover:bg-[#49BBBD] cursor-pointer"
         >
           Save
         </button>

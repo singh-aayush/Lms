@@ -19,11 +19,6 @@ export default function Sidebar() {
         <div className="flex items-center justify-left pl-[1rem] mb-8">
           <div className="text-xl font-bold text-cyan-600">LMS</div>
         </div>
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-full p-2 mb-6 border rounded-md focus:outline-none focus:ring text-black"
-        />
         <nav className="space-y-2">
           <NavLink
             to="/"

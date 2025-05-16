@@ -20,7 +20,7 @@ export default function SearchBar({ searchTerm, setSearchTerm }) {
         />
         <button
           className="absolute right-0 top-0 h-full 
-                     bg-cyan-500 text-white 
+                     bg-[#49BBBD] text-white 
                      px-3 sm:px-4 md:px-5 
                      text-sm sm:text-base md:text-base lg:text-lg 
                      font-semibold 

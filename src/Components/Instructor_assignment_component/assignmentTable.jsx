@@ -39,7 +39,7 @@ export default function AssignmentTable({ assignments }) {
 
         {/* Pagination */}
         <div className="flex justify-end px-6 py-4 bg-slate-50">
-          <button className="px-4 py-2 bg-gray-100 text-sm text-gray-700 rounded hover:bg-gray-200 cursor-pointer">
+          <button className="px-4 py-2 bg-[#49BBBD] text-sm text-gray-700 rounded hover:bg-[#49BBBD] cursor-pointer">
             Next
           </button>
         </div>

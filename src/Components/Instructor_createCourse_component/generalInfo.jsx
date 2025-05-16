@@ -136,14 +136,14 @@ function GeneralInfo({
         <button
           type="button"
           onClick={onPreview}
-          className="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-100 cursor-pointer"
+          className="border border-gray-300 px-4 py-2 rounded-md hover:bg-[#49BBBD] cursor-pointer"
         >
           Preview
         </button>
         <button
           type="button"
           onClick={onSave}
-          className="bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-teal-700 cursor-pointer"
+          className="bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-[#49BBBD] cursor-pointer"
         >
           Save changes
         </button>

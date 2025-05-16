@@ -81,7 +81,7 @@ function Assignment() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full p-3 pr-24 border-2 border-gray-300 rounded-md text-black focus:outline-none text-sm sm:text-sm md:text-base"
           />
-          <button className="absolute right-0 top-0 h-full bg-cyan-500 text-white px-5 font-semibold rounded-r-md cursor-pointer text-sm sm:text-sm md:text-base">
+          <button className="absolute right-0 top-0 h-full bg-[#49BBBD] text-white px-5 font-semibold rounded-r-md cursor-pointer text-sm sm:text-sm md:text-base">
             Search
           </button>
         </div>

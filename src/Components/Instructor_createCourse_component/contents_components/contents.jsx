@@ -102,7 +102,7 @@ const Contents = () => {
       <div className="lg:hidden flex justify-between items-center pt-2 bg-white z-20">
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="p-2 bg-gray-200 rounded hover:bg-gray-300"
+          className="p-2 bg-[#49BBBD] rounded hover:bg-[#49BBBD]"
         >
           <Menu />
         </button>
@@ -172,13 +172,13 @@ const Contents = () => {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={addUnit}
-                className="py-2 px-4 rounded bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer"
+                className="py-2 px-4 rounded bg-[#49BBBD] text-white hover:bg-[#49BBBD] transition cursor-pointer"
               >
                 Add
               </button>
               <button
                 onClick={() => setIsUnitModalOpen(false)}
-                className="py-2 px-4 rounded bg-gray-300 text-black hover:bg-gray-400 transition cursor-pointer"
+                className="py-2 px-4 rounded bg-[#49BBBD] text-black hover:bg-[#49BBBD] transition cursor-pointer"
               >
                 Cancel
               </button>
@@ -200,13 +200,13 @@ const Contents = () => {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={addTopic}
-                className="py-2 px-4 rounded bg-cyan-600 text-white hover:bg-cyan-700 transition cursor-pointer"
+                className="py-2 px-4 rounded bg-[#49BBBD] text-white hover:bg-[#49BBBD] transition cursor-pointer"
               >
                 Add
               </button>
               <button
                 onClick={() => setIsTopicModalOpen(false)}
-                className="py-2 px-4 rounded bg-gray-300 text-black hover:bg-gray-400 transition cursor-pointer"
+                className="py-2 px-4 rounded bg-[#49BBBD] text-black hover:bg-[#49BBBD] transition cursor-pointer"
               >
                 Cancel
               </button>

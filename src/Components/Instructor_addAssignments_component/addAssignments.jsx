@@ -91,8 +91,8 @@ function AddAssignments() {
               onClick={() => setMode('upload')}
               className={`px-5 py-2 rounded-full font-medium transition cursor-pointer text-[12px] md:text-4 ${
                 mode === 'upload'
-                  ? 'bg-cyan-600 text-white shadow-md'
-                  : 'text-slate-600 hover:bg-gray-200'
+                  ? 'bg-[#49BBBD] text-white shadow-md'
+                  : 'text-slate-600 hover:bg-[#49BBBD]'
               }`}
             >
               Upload File
@@ -102,8 +102,8 @@ function AddAssignments() {
               onClick={() => setMode('question')}
               className={`px-5 py-2 rounded-full font-medium transition cursor-pointer text-[12px] md:text-4 ${
                 mode === 'question'
-                  ? 'bg-cyan-600 text-white shadow-md'
-                  : 'text-slate-600 hover:bg-gray-200'
+                  ? 'bg-[#49BBBD] text-white shadow-md'
+                  : 'text-slate-600 bg-[#49BBBD]'
               }`}
             >
               Write Question
@@ -256,7 +256,7 @@ function AddAssignments() {
   onClick={addAnotherQuestion}
   disabled={questions.length >= 5}
   className={`${
-    questions.length >= 5 ? 'bg-gray-300 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300'
+    questions.length >= 5 ? 'bg-[#49BBBD] cursor-not-allowed' : 'bg-[#49BBBD] hover:bg-[#49BBBD]'
   } text-gray-800 font-medium px-4 py-2 rounded-md`}
 >
   + Add Another Question
@@ -270,7 +270,7 @@ function AddAssignments() {
           <div>
             <button
               type="submit"
-              className="w-full bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-2 rounded-md transition duration-300"
+              className="w-full bg-[#49BBBD] hover:bg-[#49BBBD] text-white font-semibold py-2 rounded-md transition duration-300"
             >
               Submit Assignment
             </button>
