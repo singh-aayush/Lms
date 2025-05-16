@@ -1,0 +1,287 @@
+@import "tailwindcss";
+
+#root {
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* styles.css */
+.content-page {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+}
+
+.unit-section {
+  margin-top: 10px;
+}
+
+.topic-list {
+  margin-left: 10px;
+}
+
+.topic-list ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.topic-list li {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.topic-list li.selected {
+  background-color: #eee;
+}
+
+.editor {
+  padding: 20px;
+  flex-grow: 1;
+}
+
+.preview-section {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.preview-item {
+  border: 1px solid #ddd;
+  padding: 5px;
+}
+
+.content-page {
+  display: flex;
+  font-family: sans-serif;
+}
+
+.sidebar {
+  width: 250px;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f8f8f8;
+}
+
+.unit-name {
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.unit-name.active {
+  background: #e0e0e0;
+}
+
+.topic-list {
+  margin-top: 8px;
+  list-style: none;
+  padding-left: 10px;
+}
+
+.topic-list li {
+  cursor: pointer;
+  margin: 5px 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.topic-list li.selected {
+  background: #e9e9e9;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.right-section {
+  flex: 1;
+  padding: 20px;
+}
+
+.top-controls {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group input {
+  padding: 8px;
+  width: 200px;
+  margin-bottom: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.input-group button {
+  padding: 6px 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.input-group button:hover {
+  background: #0056b3;
+}
+
+.content-page {
+  display: flex;
+}
+
+.sidebar {
+  width: 250px;
+  padding: 16px;
+  background: #f5f5f5;
+  border-right: 1px solid #ccc;
+}
+
+.sidebar-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.sidebar-buttons button {
+  padding: 8px;
+  font-weight: bold;
+}
+
+.unit-header,
+.topic-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4px 0;
+}
+
+.unit-header span,
+.topic-item span {
+  cursor: pointer;
+}
+
+.unit-header span.active,
+.topic-item span.active {
+  font-weight: bold;
+  color: #007bff;
+}
+
+.right-section {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+/* Modal Styling */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  background: white;
+  padding: 20px;
+  width: 300px;
+  border-radius: 8px;
+}
+
+.modal-buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Sidebar button layout */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.modal input {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
