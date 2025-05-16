@@ -45,7 +45,7 @@ function Assignment() {
       className="w-full p-3 pr-24 border-2 border-gray-300 rounded-md text-black focus:outline-none text-sm sm:text-sm md:text-base"
     />
     <button // Replace this with your actual search function
-      className="absolute h-full w-[10%] top-1/2 transform -translate-y-1/2 bg-[#49BBBD] text-white px-4 py-2 cursor-pointer rounded-md text-sm"
+      className="absolute h-full w-[10%] right-0 top-1/2 transform -translate-y-1/2 bg-[#49BBBD] text-white px-4 py-2 cursor-pointer rounded-md text-sm"
     >
       Search
     </button>
