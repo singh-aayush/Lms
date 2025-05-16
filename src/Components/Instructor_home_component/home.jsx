@@ -44,8 +44,7 @@ function Assignment() {
       onChange={(e) => setSearchTerm(e.target.value)}
       className="w-full p-3 pr-24 border-2 border-gray-300 rounded-md text-black focus:outline-none text-sm sm:text-sm md:text-base"
     />
-    <button
-      onClick={handleSearch} // replace with your actual function
+    <button // replace with your actual function
       className="absolute right-0 top-0 h-full px-4 bg-[#49BBBD] text-white text-sm sm:text-base rounded-r-md"
     >
       Search
