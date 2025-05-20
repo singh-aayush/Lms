@@ -7,4 +7,16 @@ export default defineConfig({
   plugins: [react(),
     tailwindcss(),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://lms-backend-flwq.onrender.com',
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+    hmr: {
+      overlay: false,
+    },
+  },
 })

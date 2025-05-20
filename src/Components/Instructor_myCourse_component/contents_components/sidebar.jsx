@@ -11,7 +11,7 @@ const UnitSidebar = ({
   closeSidebar,
 }) => {
   return (
-    <div className="border-r bg-[#f9f5f5] pt-4 h-full overflow-y-auto">
+    <div className="border-r-2 bg-[#f9f5f5] pt-4 h-full overflow-y-auto rounded-[11px]">
       <div className="h-6 sm:h-4 px-4 flex justify-end items-center lg:hidden">
         <button
           onClick={closeSidebar}
@@ -30,7 +30,7 @@ const UnitSidebar = ({
           disabled={!selectedUnitId}
           className={`cursor-pointer ${!selectedUnitId ? "opacity-50" : ""}`}
         >
-          + Topic
+          + Lecture
         </button>
       </div>
 
@@ -55,7 +55,6 @@ const UnitSidebar = ({
               <button onClick={() => deleteUnit(unit.id)}>🗑</button>
             </div>
 
-            {/* Topics */}
             {unit.id === selectedUnitId &&
               unit.topics.map((topic) => (
                 <div
@@ -68,10 +67,12 @@ const UnitSidebar = ({
                   }}
                 >
                   <span>{topic.name}</span>
-                  <button onClick={(e) => {
-                    e.stopPropagation();
-                    deleteTopic(unit.id, topic.id);
-                  }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteTopic(unit.id, topic.id);
+                    }}
+                  >
                     🗑
                   </button>
                 </div>

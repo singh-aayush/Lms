@@ -1,307 +1,352 @@
-import { useState } from 'react';
-import { Upload, Trash2, Save } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const InstructorSettings = () => {
+  const [editable, setEditable] = useState(false);
   const [formData, setFormData] = useState({
-    name: 'Riya',
-    email: 'riya@gmail.com',
-    phone: '+91 (555) 123-4567',
-    bio: 'Senior developer with 10 years of experience',
-    avatar: 'https://i.pravatar.cc/150',
-    expertise: ['JavaScript', 'React', 'Node.js'],
-    socialLinks: {
-      linkedin: 'https://linkedin.com/in/janesmith',
-      twitter: 'https://twitter.com/janesmith',
-    },
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    bio: '',
+    linkedin: '',
+    twitter: '',
+    avatar: '',
+    expertise: [],
+    updatedAt: '',
   });
-
-  const [previewImage, setPreviewImage] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [updateStatus, setUpdateStatus] = useState(null);
   const [newExpertise, setNewExpertise] = useState('');
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+
+        const response = await axios.get(
+          'https://lms-backend-flwq.onrender.com/api/v1/instructors/profile',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data.success && response.data.data) {
+          const { data } = response.data;
+          setFormData({
+            firstName: data.firstName || '',
+            lastName: data.lastName || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            bio: data.bio || '',
+            linkedin: data.socialLinks?.linkedin || '',
+            twitter: data.socialLinks?.twitter || '',
+            avatar: data.avatar || '',
+            expertise: data.expertise || [],
+            updatedAt: data.updatedAt || new Date().toISOString(),
+          });
+        } else {
+          throw new Error('Invalid API response');
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleEditToggle = () => {
+    setEditable(!editable);
+    setUpdateStatus(null);
+  };
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name.startsWith('socialLinks.')) {
-      const key = name.split('.')[1];
-      setFormData((prev) => ({
-        ...prev,
-        socialLinks: {
-          ...prev.socialLinks,
-          [key]: value,
-        },
-      }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (previewImage) {
-      setFormData((prev) => ({ ...prev, avatar: previewImage }));
-    }
-    setIsEditing(false);
-  };
-
-  const removeImage = () => setPreviewImage(null);
-
-  const handleAddExpertise = () => {
-    if (newExpertise.trim()) {
-      setFormData((prev) => ({
-        ...prev,
-        expertise: [...prev.expertise, newExpertise.trim()],
-      }));
+  const handleExpertiseAdd = () => {
+    if (newExpertise.trim() && !formData.expertise.includes(newExpertise.trim())) {
+      setFormData({
+        ...formData,
+        expertise: [...formData.expertise, newExpertise.trim()],
+      });
       setNewExpertise('');
     }
   };
 
-  const handleRemoveExpertise = (index) => {
-    setFormData((prev) => ({
-      ...prev,
-      expertise: prev.expertise.filter((_, i) => i !== index),
-    }));
+  const handleExpertiseRemove = (skill) => {
+    setFormData({
+      ...formData,
+      expertise: formData.expertise.filter((s) => s !== skill),
+    });
   };
 
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const updateData = {
+        bio: formData.bio,
+        expertise: formData.expertise,
+        socialLinks: {
+          linkedin: formData.linkedin,
+          twitter: formData.twitter,
+        },
+      };
+
+      const response = await axios.put(
+        'https://lms-backend-flwq.onrender.com/api/v1/instructors/profile',
+        updateData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        setUpdateStatus('Profile updated successfully!');
+        setEditable(false);
+      } else {
+        throw new Error('Failed to update profile');
+      }
+    } catch (err) {
+      setUpdateStatus(`Error: ${err.message}`);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <p className="text-gray-600 text-sm sm:text-base">Loading...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+        <p className="text-red-600 text-sm sm:text-base">Error: {error}</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 flex items-center justify-center">
-      <div className="w-full max-w-5xl bg-white shadow rounded-xl p-4 sm:p-6">
+    <div className="min-h-screen bg-gray-100 px-3 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+      <div className="max-w-5xl sm:max-w-6xl mx-auto bg-white p-4 sm:p-6 lg:p-8 rounded-2xl shadow-md">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-8 gap-4">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-            <div className="relative w-24 h-24 sm:w-28 sm:h-28 mx-auto sm:mx-0">
-              <img
-                src={previewImage || formData.avatar}
-                alt="Profile"
-                className="w-full h-full rounded-full object-cover border-4 border-gray-200"
-              />
-              {isEditing && (
-                <label
-                  htmlFor="avatar-upload"
-                  className="absolute bottom-0 right-0 bg-white p-1 rounded-full shadow cursor-pointer"
-                >
-                  <Upload className="w-4 h-4 text-gray-600" />
-                  <input
-                    id="avatar-upload"
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={handleImageChange}
-                  />
-                </label>
-              )}
-            </div>
-
-            <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-              <h1 className="text-2xl font-bold text-gray-800">{formData.name}</h1>
-              <div className="flex gap-6 mt-2 text-sm text-gray-700">
-                <div>
-                  <span className="font-semibold text-lg">12</span> Courses
-                </div>
-                <div>
-                  <span className="font-semibold text-lg">350</span> Followers
-                </div>
-              </div>
-              {isEditing && previewImage && (
-                <button
-                  onClick={removeImage}
-                  className="mt-2 text-xs text-red-500 hover:underline"
-                >
-                  <Trash2 className="w-3 h-3 inline mr-1" />
-                  Remove
-                </button>
-              )}
-            </div>
-          </div>
-
-          {!isEditing && (
-            <div className="text-center sm:text-right">
-              <button
-                onClick={() => setIsEditing(true)}
-                className="mt-2 sm:mt-0 px-5 py-2 bg-[#49BBBD] text-white rounded-full hover:bg-[#49BBBD] transition cursor-pointer"
-              >
-                Edit Profile
-              </button>
-            </div>
-          )}
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800">
+            Welcome, {formData.firstName}
+          </h2>
+          <p className="text-xs sm:text-sm text-gray-400">
+            {new Date().toLocaleDateString('en-US', {
+              weekday: 'short',
+              day: '2-digit',
+              month: 'long',
+              year: 'numeric',
+            })}
+          </p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {/* Name */}
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">Name</label>
-            {isEditing ? (
-              <input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-300"
-              />
-            ) : (
-              <p className="text-gray-800">{formData.name}</p>
-            )}
+        {/* Gradient Header */}
+        <div className="h-16 sm:h-20 w-full rounded-xl bg-gradient-to-r from-blue-100 to-yellow-100 mb-6 sm:mb-8" />
+
+        {/* Profile Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <img
+              src={formData.avatar || 'https://via.placeholder.com/80'}
+              alt="Profile"
+              className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 border border-gray-200 rounded-full object-cover"
+            />
+            <div>
+              <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-800">
+                {formData.firstName} {formData.lastName}
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-500 truncate">
+                {formData.email}
+              </p>
+            </div>
           </div>
 
-          {/* Phone */}
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">Phone</label>
-            {isEditing ? (
-              <input
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-300"
-              />
-            ) : (
-              <p className="text-gray-800">{formData.phone}</p>
-            )}
-          </div>
-
-          {/* Email */}
-          <div className="sm:col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Email</label>
-            <p className="text-gray-800">{formData.email}</p>
-          </div>
-
-          {/* Bio */}
-          <div className="sm:col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Bio</label>
-            {isEditing ? (
-              <textarea
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-                rows="3"
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-indigo-300"
-              />
-            ) : (
-              <p className="text-gray-800">{formData.bio}</p>
-            )}
-          </div>
-
-          {/* Expertise */}
-          <div className="sm:col-span-2">
-            <label className="block text-sm text-gray-700 mb-1">Expertise</label>
-            {isEditing ? (
-              <>
-                <div className="flex flex-col sm:flex-row gap-2 mb-2">
-                  <input
-                    type="text"
-                    value={newExpertise}
-                    onChange={(e) => setNewExpertise(e.target.value)}
-                    placeholder="Add a skill"
-                    className="flex-grow p-2 border rounded-lg"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleAddExpertise}
-                    className="px-3 py-2 bg-[#49BBBD] text-white rounded-lg hover:bg-[#49BBBD] cursor-pointer"
-                  >
-                    Add
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {formData.expertise.map((skill, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full text-sm flex items-center gap-1"
-                    >
-                      {skill}
-                      <button type="button" onClick={() => handleRemoveExpertise(idx)}>
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              </>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                {formData.expertise.map((skill, idx) => (
-                  <span key={idx} className="bg-gray-200 px-3 py-1 rounded-full text-sm">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Social Links */}
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">LinkedIn</label>
-            {isEditing ? (
-              <input
-                name="socialLinks.linkedin"
-                value={formData.socialLinks.linkedin}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-lg"
-              />
-            ) : (
-              <a
-                href={formData.socialLinks.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline break-words"
-              >
-                {formData.socialLinks.linkedin}
-              </a>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm text-gray-700 mb-1">Twitter</label>
-            {isEditing ? (
-              <input
-                name="socialLinks.twitter"
-                value={formData.socialLinks.twitter}
-                onChange={handleChange}
-                className="w-full p-2 border rounded-lg"
-              />
-            ) : (
-              <a
-                href={formData.socialLinks.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline break-words"
-              >
-                {formData.socialLinks.twitter}
-              </a>
-            )}
-          </div>
-
-          {/* Buttons */}
-          {isEditing && (
-            <div className="sm:col-span-2 flex flex-col sm:flex-row justify-end gap-4 mt-4">
+          <div className="mt-3 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+            <button
+              onClick={handleEditToggle}
+              className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-blue-700 transition text-xs sm:text-sm"
+            >
+              {editable ? 'Cancel' : 'Edit'}
+            </button>
+            {editable && (
               <button
-                type="button"
-                onClick={() => {
-                  setIsEditing(false);
-                  setPreviewImage(null);
-                }}
-                className="px-4 py-2 border border-gray-300 rounded-full text-gray-700 hover:bg-[#49BBBD] cursor-pointer"
+                onClick={handleSubmit}
+                className="bg-green-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-green-700 transition text-xs sm:text-sm"
               >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="flex items-center gap-2 px-4 py-2 bg-cyan-500 text-white rounded-full hover:bg-[#49BBBD] cursor-pointer"
-              >
-                <Save className="w-4 h-4" />
                 Save
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Update Status */}
+        {updateStatus && (
+          <div
+            className={`mb-4 sm:mb-6 p-3 sm:p-4 rounded-lg text-xs sm:text-sm z-[110] ${
+              updateStatus.includes('Error')
+                ? 'bg-red-100 text-red-700'
+                : 'bg-green-100 text-green-700'
+            }`}
+          >
+            {updateStatus}
+          </div>
+        )}
+
+        {/* Profile Details */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">
+              First Name
+            </label>
+            <p className="mt-1 text-xs sm:text-sm text-gray-600">
+              {formData.firstName || 'N/A'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">
+              Last Name
+            </label>
+            <p className="mt-1 text-xs sm:text-sm text-gray-600">
+              {formData.lastName || 'N/A'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">
+              Phone
+            </label>
+            <p className="mt-1 text-xs sm:text-sm text-gray-600">
+              {formData.phone || 'N/A'}
+            </p>
+          </div>
+
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">
+              Bio
+            </label>
+            <textarea
+              name="bio"
+              value={formData.bio}
+              onChange={handleChange}
+              disabled={!editable}
+              placeholder="Your Bio"
+              className="mt-1 block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 min-h-[80px] sm:min-h-[100px] text-xs sm:text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">
+              LinkedIn
+            </label>
+            <input
+              name="linkedin"
+              value={formData.linkedin}
+              onChange={handleChange}
+              disabled={!editable}
+              placeholder="Your LinkedIn Profile"
+              className="mt-1 block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-xs sm:text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">
+              Twitter
+            </label>
+            <input
+              name="twitter"
+              value={formData.twitter}
+              onChange={handleChange}
+              disabled={!editable}
+              placeholder="Your Twitter Profile"
+              className="mt-1 block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-xs sm:text-sm"
+            />
+          </div>
+        </div>
+
+        {/* Expertise Input */}
+        <div className="mt-6 sm:mt-10">
+          <h4 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">
+            Expertise
+          </h4>
+          {editable && (
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-3 sm:mb-4">
+              <input
+                value={newExpertise}
+                onChange={(e) => setNewExpertise(e.target.value)}
+                placeholder="Add expertise"
+                className="block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-xs sm:text-sm"
+              />
+              <button
+                onClick={handleExpertiseAdd}
+                className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-blue-700 transition text-xs sm:text-sm"
+              >
+                Add
               </button>
             </div>
           )}
-        </form>
+          <div className="flex flex-wrap gap-2">
+            {formData.expertise.map((skill) => (
+              <span
+                key={skill}
+                className="bg-blue-100 text-blue-800 text-xs sm:text-sm font-medium px-2 sm:px-3 py-1 rounded-full flex items-center"
+              >
+                {skill}
+                {editable && (
+                  <button
+                    onClick={() => handleExpertiseRemove(skill)}
+                    className="ml-1 sm:ml-2 text-red-600 hover:text-red-800 text-xs sm:text-sm"
+                  >
+                    ×
+                  </button>
+                )}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Email Section */}
+        <div className="mt-6 sm:mt-10">
+          <h4 className="text-base sm:text-lg font-semibold text-gray-800 mb-3 sm:mb-4">
+            My Email Address
+          </h4>
+          <div className="flex items-center space-x-3 sm:space-x-4 bg-blue-50 p-3 sm:p-4 rounded-xl">
+            <div className="bg-blue-600 text-white rounded-full p-1.5 sm:p-2 text-base sm:text-lg">
+              📧
+            </div>
+            <div>
+              <p className="font-medium text-gray-700 text-xs sm:text-sm">
+                {formData.email}
+              </p>
+              <p className="text-xs text-gray-500">
+                Last updated:{' '}
+                {new Date(formData.updatedAt).toLocaleDateString()}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
