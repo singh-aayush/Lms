@@ -21,14 +21,20 @@ const Login = () => {
     setLoading(true);
     setError('');
     setSuccess('');
-
+  
     try {
       const res = await axios.post(
         'https://lms-backend-flwq.onrender.com/api/v1/auth/login',
         formData
       );
-
-      const { token } = res.data.data;
+  
+      const { token, role } = res.data.data;
+  
+      if (role !== 'instructor') {
+        setError(`Access denied. ${role.charAt(0).toUpperCase() + role.slice(1)}s are not allowed on this page.`);
+        return;
+      }
+  
       loginUser(token);
       setSuccess('Login successful! Redirecting...');
       setTimeout(() => navigate('/dashboard'), 1500);
@@ -39,6 +45,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+  
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
