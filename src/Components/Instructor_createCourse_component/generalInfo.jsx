@@ -172,7 +172,7 @@ function GeneralInfo({
 
       if (response.data.success) {
         setMessage('Course saved successfully!');
-        const courseId = response.data.data._id;
+        // const courseId = response.data.data._id;
         navigate(`/dashboard/my-courses`);
       } else {
         setMessage('Something went wrong.');

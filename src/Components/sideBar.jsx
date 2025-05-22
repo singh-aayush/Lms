@@ -126,7 +126,7 @@ export default function Sidebar({ onLinkClick }) {
         </div>
         <nav className="space-y-1 sm:space-y-2">
           <NavLink
-            to="/"
+            to="/dashboard"
             end
             className={({ isActive }) =>
               isActive ? `${linkClass} ${activeClass}` : linkClass

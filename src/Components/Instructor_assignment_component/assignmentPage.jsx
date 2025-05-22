@@ -63,7 +63,6 @@ function Assignments() {
         );
 
         if (response.data.success) {
-          console.log('Courses fetched:', response.data.data);
           setCourses(response.data.data);
           setSelectedCourseId('all');
         } else {
@@ -98,7 +97,6 @@ function Assignments() {
           return;
         }
 
-        console.log('Fetching assessments for courseId:', selectedCourseId);
         let allAssessments = [];
         if (selectedCourseId === 'all') {
           for (const course of courses) {
@@ -128,7 +126,6 @@ function Assignments() {
           }
         }
 
-        console.log('Assessments fetched:', allAssessments);
         setAssessments(allAssessments);
         if (allAssessments.length === 0) {
           showNotification('No submitted assessments found.');
@@ -214,7 +211,6 @@ function Assignments() {
               <select
                 value={selectedCourseId}
                 onChange={(e) => {
-                  console.log('Selected course ID:', e.target.value);
                   setSelectedCourseId(e.target.value);
                 }}
                 className="w-full sm:w-auto border border-gray-300 rounded-md p-2 sm:p-2.5 text-sm sm:text-base text-gray-700 focus:ring-2 focus:ring-[#49BBBD] outline-none"
