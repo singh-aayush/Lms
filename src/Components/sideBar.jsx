@@ -121,9 +121,9 @@ export default function Sidebar({ onLinkClick }) {
         onClose={() => setNotification({ message: '', type: '' })}
       />
       <div>
-        <div className="flex items-center justify-left pl-2 sm:pl-4 mb-6 sm:mb-8">
+        {/* <div className="flex items-center justify-left pl-2 sm:pl-4 mb-6 sm:mb-8">
           <div className="text-lg sm:text-xl font-bold text-cyan-600">LMS</div>
-        </div>
+        </div> */}
         <nav className="space-y-1 sm:space-y-2">
           <NavLink
             to="/dashboard"

@@ -8,12 +8,28 @@ export default function Layout() {
 
   return (
     <div className="flex h-screen bg-slate-100 w-screen relative overflow-hidden">
+      {/* Navbar */}
+      <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white shadow-md flex items-center justify-between px-4 z-[100]">
+        <div className="text-lg font-bold text-cyan-600">LMS</div>
+        <button
+          className="p-2 rounded-md bg-white"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          aria-label={isSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+        >
+          <HiMenu className="text-xl sm:text-2xl text-gray-700" />
+        </button>
+      </div>
+
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-60 bg-white shadow-lg transform transition-transform duration-300 z-[100] 
+        className={`fixed top-14 md:top-0 left-0 h-[calc(100%-3.5rem)] md:h-full w-60 bg-white shadow-lg transform transition-transform duration-300 z-[100] 
         ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 md:static md:block`}
       >
-        <Sidebar onLinkClick={() => setIsSidebarOpen(false)} />
+        <Sidebar
+          onLinkClick={() => setIsSidebarOpen(false)}
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
       </div>
 
       {/* Overlay on mobile */}
@@ -25,20 +41,9 @@ export default function Layout() {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto relative">
-        {/* Menu Button on Mobile — hidden when sidebar is open */}
-        <button
-          className={`md:hidden fixed top-4 left-4 z-[80] p-2 rounded-md bg-white shadow-md ${
-            isSidebarOpen ? 'hidden' : 'block'
-          }`}
-          onClick={() => setIsSidebarOpen(true)}
-          aria-label="Open sidebar"
-        >
-          <HiMenu className="text-xl sm:text-2xl text-gray-700" />
-        </button>
-
+      <div className="flex-1 overflow-auto relative pt-14 md:pt-0 md:ml-60">
         {/* Outlet for nested routes */}
-        <div className="mt-12 sm:mt-14 md:mt-0">
+        <div className="p-2">
           <Outlet />
         </div>
       </div>

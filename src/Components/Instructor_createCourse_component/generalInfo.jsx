@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -123,7 +123,20 @@ function GeneralInfo({
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const navigate = useNavigate();
 
-  // Converts comma-separated string input to array for prerequisites and learning outcomes
+  // State to hold the raw input strings for prerequisites and learning outcomes
+  const [prerequisitesInput, setPrerequisitesInput] = useState(prerequisites?.join(', ') || '');
+  const [learningOutcomesInput, setLearningOutcomesInput] = useState(learningOutcomes?.join(', ') || '');
+
+  // Sync input strings with state arrays whenever they change
+  useEffect(() => {
+    setPrerequisitesInput(prerequisites?.join(', ') || '');
+  }, [prerequisites]);
+
+  useEffect(() => {
+    setLearningOutcomesInput(learningOutcomes?.join(', ') || '');
+  }, [learningOutcomes]);
+
+  // Handle input changes for prerequisites and learning outcomes
   const handleArrayInput = (value, setter) => {
     const items = value
       .split(',')
@@ -172,8 +185,7 @@ function GeneralInfo({
 
       if (response.data.success) {
         setMessage('Course saved successfully!');
-        // const courseId = response.data.data._id;
-        navigate(`/dashboard/my-courses`);
+        navigate('/dashboard/my-courses');
       } else {
         setMessage('Something went wrong.');
       }
@@ -367,8 +379,11 @@ function GeneralInfo({
           </label>
           <input
             type="text"
-            value={prerequisites?.join(', ') || ''}
-            onChange={(e) => handleArrayInput(e.target.value, setPrerequisites)}
+            value={prerequisitesInput}
+            onChange={(e) => {
+              setPrerequisitesInput(e.target.value);
+              handleArrayInput(e.target.value, setPrerequisites);
+            }}
             placeholder="e.g. Basic JavaScript, React Basics"
             className="w-full border border-gray-300 rounded-md px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm focus:ring-2 focus:ring-teal-600 outline-none"
           />
@@ -379,8 +394,11 @@ function GeneralInfo({
           </label>
           <input
             type="text"
-            value={learningOutcomes?.join(', ') || ''}
-            onChange={(e) => handleArrayInput(e.target.value, setLearningOutcomes)}
+            value={learningOutcomesInput}
+            onChange={(e) => {
+              setLearningOutcomesInput(e.target.value);
+              handleArrayInput(e.target.value, setLearningOutcomes);
+            }}
             placeholder="e.g. Build scalable apps, Master state"
             className="w-full border border-gray-300 rounded-md px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm focus:ring-2 focus:ring-teal-600 outline-none"
           />
