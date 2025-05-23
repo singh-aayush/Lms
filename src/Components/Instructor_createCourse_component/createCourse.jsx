@@ -71,7 +71,7 @@ function CreateCourse() {
         {/* Title input moved to GeneralInfo */}
         
         {/* Tabs */}
-        <div className="flex flex-wrap sm:space-x-6 border-b">
+        {/* <div className="flex flex-wrap sm:space-x-6 border-b">
           {['General'].map((tab) => (
             <button
               key={tab}
@@ -85,7 +85,7 @@ function CreateCourse() {
               {tab}
             </button>
           ))}
-        </div>
+        </div> */}
 
         {/* Conditional Rendering */}
         {activeTab === 'General' && (

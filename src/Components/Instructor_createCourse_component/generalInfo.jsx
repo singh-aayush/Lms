@@ -194,7 +194,12 @@ function GeneralInfo({
   };
 
   return (
-    <div className="space-y-4 sm:space-y-6 mt-4 sm:mt-6">
+    <div className="space-y-4 sm:space-y-6">
+      {/* Create Course Heading */}
+      <h1 className="!text-[2rem] md:text-2xl font-bold text-slate-800 mb-4 sm:mb-6">
+        Create Course
+      </h1>
+
       {/* Preview Modal */}
       {isPreviewOpen && (
         <PreviewModal

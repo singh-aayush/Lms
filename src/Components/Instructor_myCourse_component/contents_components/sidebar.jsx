@@ -11,7 +11,7 @@ const UnitSidebar = ({
   closeSidebar,
 }) => {
   return (
-    <div className="border-r-2 bg-[#f9f5f5] pt-4 h-full overflow-y-auto rounded-[11px]">
+    <div className="border-r-2 bg-[#f9f5f5] pt-4 h-full overflow-y-auto rounded-[11px] mt-14 md:mt-0">
       <div className="h-6 sm:h-4 px-4 flex justify-end items-center lg:hidden">
         <button
           onClick={closeSidebar}

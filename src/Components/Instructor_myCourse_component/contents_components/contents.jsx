@@ -157,7 +157,6 @@ const Contents = () => {
         window.location.href = "/login";
         return;
       }
-      showNotification("Failed to fetch curriculum.");
     }
   };
 
@@ -205,7 +204,7 @@ const Contents = () => {
       if (error.response?.status === 401) {
         showNotification("Session expired or invalid. Please log in again.");
         localStorage.removeItem("token");
-        window.location.href = "/login";
+        window.location.href = "/";
         return;
       }
       showNotification("Failed to add section.");
@@ -268,7 +267,7 @@ const Contents = () => {
       if (error.response?.status === 401) {
         showNotification("Session expired or invalid. Please log in again.");
         localStorage.removeItem("token");
-        window.location.href = "/login";
+        window.location.href = "/";
         return;
       }
       showNotification("Failed to add lecture.");
@@ -374,7 +373,7 @@ const Contents = () => {
       if (error.response?.status === 401) {
         showNotification("Session expired or invalid. Please log in again.");
         localStorage.removeItem("token");
-        window.location.href = "/login";
+        window.location.href = "/";
         return;
       }
       showNotification("Failed to delete lecture.");
@@ -524,11 +523,20 @@ const Contents = () => {
 
         {showAssignments ? (
           <AddAssignments courseId={courseId} />
+        ) : status === "draft" ? (
+          <div className="w-full relative mx-auto rounded-lg bg-white p-4 sm:p-6 text-center">
+            <p className="text-lg sm:text-xl text-gray-700">
+              Please publish the course to add units and lectures.
+            </p>
+          </div>
         ) : !showCurriculum ? (
-          <div className="w-full relative mx-auto rounded-lg p-4 sm:p-6 bg-white shadow-md">
+          <div className="w-full relative mx-auto rounded-lg bg-white p-4 sm:p-6 text-center">
+            <p className="text-lg sm:text-xl text-gray-700 mb-4">
+              Now add units and lectures to your course!
+            </p>
             <button
               onClick={() => setShowCurriculum(true)}
-              className="py-1.5 px-3 sm:px-4 rounded absolute top-2 right-2 sm:top-3 sm:right-3 bg-[#49BBBD] text-white text-sm sm:text-base hover:bg-[#3a9a9b] transition cursor-pointer"
+              className="py-1.5 px-3 sm:px-4 rounded bg-[#49BBBD] text-white text-sm sm:text-base hover:bg-[#3a9a9b] transition cursor-pointer"
             >
               Add Curriculum
             </button>
@@ -592,7 +600,7 @@ const Contents = () => {
         )}
 
         {isTitleModalOpen && (
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-100">
             <div className="bg-white rounded-lg shadow-lg w-[90%] max-w-xs sm:max-w-sm md:max-w-md p-4 sm:p-6">
               <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800">
                 Edit Course Title
@@ -625,8 +633,8 @@ const Contents = () => {
           </div>
         )}
 
-        {isUnitModalOpen && (
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+        {isUnitModalOpen && status !== "draft" && (
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-100">
             <div className="bg-white rounded-lg shadow-lg w-[90%] max-w-xs sm:max-w-sm md:max-w-md p-4 sm:p-6">
               <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800">
                 Add Section
@@ -656,8 +664,8 @@ const Contents = () => {
           </div>
         )}
 
-        {isTopicModalOpen && (
-          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+        {isTopicModalOpen && status !== "draft" && (
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-100">
             <div className="bg-white rounded-lg shadow-lg w-[90%] max-w-xs sm:max-w-sm md:max-w-md p-4 sm:p-6">
               <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-gray-800">
                 Add Lecture

@@ -35,7 +35,7 @@ const Notification = ({ message, type, onClose }) => {
 
 export default function Sidebar({ onLinkClick }) {
   const navigate = useNavigate();
-  const [instructor, setInstructor] = useState({ firstName: '', lastName: '' });
+  const [instructor, setInstructor] = useState({ firstName: '', lastName: '', avatar: '' });
   const [notification, setNotification] = useState({ message: '', type: '' });
   const [isLoading, setIsLoading] = useState(true);
 
@@ -72,6 +72,7 @@ export default function Sidebar({ onLinkClick }) {
           setInstructor({
             firstName: response.data.data.firstName || '',
             lastName: response.data.data.lastName || '',
+            avatar: response.data.data.avatar || '',
           });
         } else {
           showNotification('Failed to load instructor profile.');
@@ -121,9 +122,9 @@ export default function Sidebar({ onLinkClick }) {
         onClose={() => setNotification({ message: '', type: '' })}
       />
       <div>
-        {/* <div className="flex items-center justify-left pl-2 sm:pl-4 mb-6 sm:mb-8">
+        <div className="hidden md:block flex items-center justify-left pl-2 sm:pl-4 mb-2">
           <div className="text-lg sm:text-xl font-bold text-cyan-600">LMS</div>
-        </div> */}
+        </div>
         <nav className="space-y-1 sm:space-y-2">
           <NavLink
             to="/dashboard"
@@ -166,11 +167,19 @@ export default function Sidebar({ onLinkClick }) {
       </div>
       <div className="mt-4 sm:mt-6">
         <div className="flex items-center gap-2 sm:gap-3 pl-2 sm:pl-4">
-          <img
-            src="https://i.pravatar.cc/40"
-            alt="Instructor avatar"
-            className="rounded-full w-8 sm:w-10 h-8 sm:h-10"
-          />
+          {instructor.avatar ? (
+            <img
+              src={instructor.avatar}
+              alt="Instructor avatar"
+              className="rounded-full w-8 sm:w-10 h-8 sm:h-10"
+            />
+          ) : (
+            <div className="rounded-full w-8 sm:w-10 h-8 sm:h-10 bg-gray-200 flex items-center justify-center">
+              <span className="text-xs sm:text-sm text-gray-600">
+                {instructor.firstName.charAt(0) || 'I'}
+              </span>
+            </div>
+          )}
           <div>
             {isLoading ? (
               <p className="text-xs sm:text-sm text-gray-600">Loading...</p>

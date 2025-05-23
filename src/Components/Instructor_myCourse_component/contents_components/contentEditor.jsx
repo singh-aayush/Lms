@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
@@ -37,6 +38,7 @@ const TopicEditor = ({ topic, updateTopic, lectureId, sectionId }) => {
   const [videoFiles, setVideoFiles] = useState([]);
   const [videoPreviews, setVideoPreviews] = useState([]);
   const [notification, setNotification] = useState({ message: "", type: "" });
+  const [loading, setLoading] = useState(false); // New loading state
 
   const { courseId } = useParams();
   const { state } = useLocation();
@@ -45,7 +47,7 @@ const TopicEditor = ({ topic, updateTopic, lectureId, sectionId }) => {
   // Show notification with message and type
   const showNotification = (message, type = "error") => {
     setNotification({ message, type });
-    setTimeout(() => setNotification({ message: "", type: "" }), 5000); // Auto-dismiss after 5 seconds
+    setTimeout(() => setNotification({ message: "", type: "" }), 5000);
   };
 
   // Validate section and lecture IDs before upload
@@ -149,10 +151,12 @@ const TopicEditor = ({ topic, updateTopic, lectureId, sectionId }) => {
 
   // Handle saving all data
   const handleSave = async () => {
+    setLoading(true); // Set loading to true
     try {
       const token = localStorage.getItem("token");
       if (!token) {
         showNotification("Please log in to save lecture data.");
+        setLoading(false);
         return;
       }
 
@@ -160,6 +164,7 @@ const TopicEditor = ({ topic, updateTopic, lectureId, sectionId }) => {
       const isValid = await validateSectionAndLecture(sectionId, lectureId);
       if (!isValid) {
         showNotification("Cannot save lecture: Section or lecture not found. Please refresh the page and try again.");
+        setLoading(false);
         return;
       }
 
@@ -238,7 +243,6 @@ const TopicEditor = ({ topic, updateTopic, lectureId, sectionId }) => {
           }
         );
 
-        console.log("Thumbnail API Response:", thumbnailResponse.data);
         newThumbnailUrl = thumbnailResponse.data.data?.thumbnail || thumbnailPreview;
       }
 
@@ -267,16 +271,18 @@ const TopicEditor = ({ topic, updateTopic, lectureId, sectionId }) => {
           showNotification(
             `Failed to save lecture: ${error.response.data.message || "Section or lecture not found."}`
           );
-          return;
-        }
-        if (error.response.status === 500 && error.response.data.message === "Unexpected field") {
+        } else if (error.response.status === 500 && error.response.data.message === "Unexpected field") {
           showNotification(
             "Failed to save lecture: Unexpected field in the request. Please ensure only valid fields are sent."
           );
-          return;
+        } else {
+          showNotification("Failed to save lecture.");
         }
+      } else {
+        showNotification("Failed to save lecture.");
       }
-      showNotification("Failed to save lecture.");
+    } finally {
+      setLoading(false); // Reset loading state
     }
   };
 
@@ -414,9 +420,38 @@ const TopicEditor = ({ topic, updateTopic, lectureId, sectionId }) => {
       <div className="flex justify-end pt-4">
         <button
           onClick={handleSave}
-          className="bg-[#49BBBD] text-white px-6 py-2 rounded-md hover:bg-[#3a9a9b] transition cursor-pointer"
+          disabled={loading}
+          className={`bg-[#49BBBD] text-white px-6 py-2 rounded-md transition flex items-center gap-2 ${
+            loading ? "opacity-50 cursor-not-allowed" : "hover:bg-[#3a9a9b] cursor-pointer"
+          }`}
         >
-          Save Lecture
+          {loading ? (
+            <>
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Saving...
+            </>
+          ) : (
+            "Save Lecture"
+          )}
         </button>
       </div>
     </div>

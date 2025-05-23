@@ -41,9 +41,9 @@ export default function Layout() {
       )}
 
       {/* Main Content */}
-      <div className="flex-1 overflow-auto relative pt-14 md:pt-0 md:ml-60">
+      <div className="flex-1 overflow-auto relative pt-14 md:pt-0">
         {/* Outlet for nested routes */}
-        <div className="p-2">
+        <div>
           <Outlet />
         </div>
       </div>

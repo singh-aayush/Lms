@@ -31,9 +31,9 @@ export default function MyCourses() {
     fetchCourses();
   }, []);
 
-  const handlePlay = (courseId) => {
-    navigate(`/course/${courseId}`);
-  };
+  // const handlePlay = (courseId) => {
+  //   navigate(`/course/${courseId}`);
+  // };
 
   const handleCardClick = (courseId, courseTitle) => {
     navigate(`/dashboard/course-editor/${courseId}`, { state: { courseTitle } });
@@ -42,7 +42,7 @@ export default function MyCourses() {
   return (
     <div className="h-full w-full bg-sky-50 p-4 lg:py-12 sm:py-6 sm:px-4 md:p-8 overflow-auto">
       <div className="flex justify-between items-start mb-6 sm:mb-8">
-        <h1 className="sm:text-4x1 md:text-3xl  font-bold text-slate-900">Manage Courses</h1>
+        <h1 className="!text-[2rem] md:text-3xl  font-bold text-slate-900">Manage Courses</h1>
       </div>
 
       {loading ? (
@@ -71,7 +71,7 @@ export default function MyCourses() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent card click event
-                    handlePlay(course._id);
+                    // handlePlay(course._id);
                   }}
                   className="absolute -bottom-4 right-0 bg-[#49BBBD] text-white p-3 rounded-full shadow-lg hover:scale-120 cursor-pointer z-50"
                   title="Play Course"
