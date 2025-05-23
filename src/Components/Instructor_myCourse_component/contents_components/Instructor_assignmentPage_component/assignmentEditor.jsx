@@ -403,7 +403,7 @@ function AssessmentEditor() {
                       {question.options.map((option, oIndex) => (
                         <div
                           key={oIndex}
-                          className='flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 mt-2'
+                          className='flex flex-row !lg:flex-col items-start sm:items-center gap-2 sm:gap-3 mt-2'
                         >
                           <input
                             type='text'
