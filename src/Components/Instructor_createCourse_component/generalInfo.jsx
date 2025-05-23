@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
@@ -126,15 +126,6 @@ function GeneralInfo({
   // State to hold the raw input strings for prerequisites and learning outcomes
   const [prerequisitesInput, setPrerequisitesInput] = useState(prerequisites?.join(', ') || '');
   const [learningOutcomesInput, setLearningOutcomesInput] = useState(learningOutcomes?.join(', ') || '');
-
-  // Sync input strings with state arrays whenever they change
-  useEffect(() => {
-    setPrerequisitesInput(prerequisites?.join(', ') || '');
-  }, [prerequisites]);
-
-  useEffect(() => {
-    setLearningOutcomesInput(learningOutcomes?.join(', ') || '');
-  }, [learningOutcomes]);
 
   // Handle input changes for prerequisites and learning outcomes
   const handleArrayInput = (value, setter) => {
