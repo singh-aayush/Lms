@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from 'axios';              
+import { Upload } from 'lucide-react'; // make sure this import is at the top
+
 
 const InstructorSettings = () => {
   const [editable, setEditable] = useState(false);
@@ -19,6 +21,7 @@ const InstructorSettings = () => {
   const [error, setError] = useState(null);
   const [updateStatus, setUpdateStatus] = useState(null);
   const [newExpertise, setNewExpertise] = useState('');
+  const [avatarFile, setAvatarFile] = useState(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -68,10 +71,19 @@ const InstructorSettings = () => {
   const handleEditToggle = () => {
     setEditable(!editable);
     setUpdateStatus(null);
+    setAvatarFile(null);
   };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAvatarFile(file);
+      setFormData({ ...formData, avatar: URL.createObjectURL(file) });
+    }
   };
 
   const handleExpertiseAdd = () => {
@@ -98,21 +110,26 @@ const InstructorSettings = () => {
         throw new Error('No authentication token found');
       }
 
-      const updateData = {
-        bio: formData.bio,
-        expertise: formData.expertise,
-        socialLinks: {
-          linkedin: formData.linkedin,
-          twitter: formData.twitter,
-        },
-      };
+      const updateData = new FormData();
+      updateData.append('firstName', formData.firstName);
+      updateData.append('lastName', formData.lastName);
+      updateData.append('email', formData.email);
+      updateData.append('phone', formData.phone);
+      updateData.append('bio', formData.bio);
+      updateData.append('expertise', JSON.stringify(formData.expertise));
+      updateData.append('socialLinks[linkedin]', formData.linkedin);
+      updateData.append('socialLinks[twitter]', formData.twitter);
+      if (avatarFile) {
+        updateData.append('avatar', avatarFile);
+      }
 
       const response = await axios.put(
-        'https://lms-backend-flwq.onrender.com/api/v1/instructors/profile',
+        'https://lms-backend-flwq.onrender.com/api/v1/auth/updatedetails',
         updateData,
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
           },
         }
       );
@@ -120,6 +137,7 @@ const InstructorSettings = () => {
       if (response.data.success) {
         setUpdateStatus('Profile updated successfully!');
         setEditable(false);
+        setAvatarFile(null);
       } else {
         throw new Error('Failed to update profile');
       }
@@ -167,12 +185,27 @@ const InstructorSettings = () => {
 
         {/* Profile Section */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8">
-          <div className="flex items-center space-x-3 sm:space-x-4">
-            <img
-              src={formData.avatar || 'https://via.placeholder.com/80'}
-              alt="Profile"
-              className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 border border-gray-200 rounded-full object-cover"
-            />
+          <div className="flex items-center space-x-3 sm:space-x-4 relative">
+            <div className="relative">
+              <img
+                src={formData.avatar || 'https://via.placeholder.com/80'}
+                alt="Profile"
+                className="w-14 h-14 sm:w-16 sm:h-16 lg:w-20 lg:h-20 border border-gray-200 rounded-full object-cover"
+              />
+
+{editable && (
+  <label className="absolute bottom-0 right-0 bg-gray-300 text-white rounded-full p-1 sm:p-1.5 cursor-pointer hover:bg-blue-700 transform translate-x-1/4 translate-y-1/4">
+    <input
+      type="file"
+      accept="image/*"
+      onChange={handleAvatarChange}
+      className="hidden"
+    />
+    <Upload className="w-4 h-4 sm:w-5 sm:h-5" />
+  </label>
+)}
+
+            </div>
             <div>
               <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-800">
                 {formData.firstName} {formData.lastName}
@@ -186,14 +219,14 @@ const InstructorSettings = () => {
           <div className="mt-3 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
             <button
               onClick={handleEditToggle}
-              className="bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-blue-700 transition text-xs sm:text-sm"
+              className="bg-[#49BBBD] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-[#49BBBD] transition text-xs sm:text-sm"
             >
               {editable ? 'Cancel' : 'Edit'}
             </button>
             {editable && (
               <button
                 onClick={handleSubmit}
-                className="bg-green-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-green-700 transition text-xs sm:text-sm"
+                className="bg-[#49BBBD] text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg hover:bg-[#49BBBD] transition text-xs sm:text-sm"
               >
                 Save
               </button>
@@ -220,27 +253,42 @@ const InstructorSettings = () => {
             <label className="block text-xs sm:text-sm font-medium text-gray-700">
               First Name
             </label>
-            <p className="mt-1 text-xs sm:text-sm text-gray-600">
-              {formData.firstName || 'N/A'}
-            </p>
+            <input
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              disabled={!editable}
+              placeholder="Your First Name"
+              className="mt-1 block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-xs sm:text-sm"
+            />
           </div>
 
           <div>
             <label className="block text-xs sm:text-sm font-medium text-gray-700">
               Last Name
             </label>
-            <p className="mt-1 text-xs sm:text-sm text-gray-600">
-              {formData.lastName || 'N/A'}
-            </p>
+            <input
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              disabled={!editable}
+              placeholder="Your Last Name"
+              className="mt-1 block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-xs sm:text-sm"
+            />
           </div>
 
           <div>
             <label className="block text-xs sm:text-sm font-medium text-gray-700">
               Phone
             </label>
-            <p className="mt-1 text-xs sm:text-sm text-gray-600">
-              {formData.phone || 'N/A'}
-            </p>
+            <input
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              disabled={!editable}
+              placeholder="Your Phone Number"
+              className="mt-1 block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-xs sm:text-sm"
+            />
           </div>
 
           <div>
@@ -281,6 +329,20 @@ const InstructorSettings = () => {
               onChange={handleChange}
               disabled={!editable}
               placeholder="Your Twitter Profile"
+              className="mt-1 block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-xs sm:text-sm"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs sm:text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled={!editable}
+              placeholder="Your Email"
               className="mt-1 block w-full px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 text-xs sm:text-sm"
             />
           </div>

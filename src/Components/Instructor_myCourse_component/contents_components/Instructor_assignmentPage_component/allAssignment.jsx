@@ -290,7 +290,7 @@ function AssessmentsList() {
                   </ul>
                 </div>
 
-                <div className="mt-4 sm:mt-6 flex justify-end gap-2 sm:gap-3">
+                <div className="mt-4 sm:mt-6 flex flex-wrap justify-end gap-2 sm:gap-3">
                   <Link
                     to={`/dashboard/course-editor/${courseId}/assessments/${assessment._id}`}
                     className="px-3 sm:px-4 py-1.5 sm:py-2 bg-[#49BBBD] text-white font-semibold rounded-md hover:bg-[#3AA8AA] transition duration-300 text-sm sm:text-base"
