@@ -42,7 +42,7 @@ export default function MyCourses() {
   return (
     <div className="h-full w-full bg-sky-50 p-4 lg:py-12 sm:py-6 sm:px-4 md:p-8 overflow-auto">
       <div className="flex justify-between items-start mb-6 sm:mb-8">
-        <h1 className="!text-[2rem] md:text-3xl  font-bold text-slate-900">Manage Courses</h1>
+        <h1 className="!text-[2rem] md:text-3xl font-bold text-slate-900">Manage Courses</h1>
       </div>
 
       {loading ? (
@@ -87,10 +87,10 @@ export default function MyCourses() {
 
               <div className="flex justify-between items-center">
                 <span className="text-sm font-semibold text-slate-700">
-                  ₹{course.discountPrice ?? course.price}
+                  ₹{(course.discountPrice ? course.price - course.discountPrice : course.price).toFixed(2)}
                 </span>
                 <span className="text-xs text-gray-500 line-through">
-                  ₹{course.price}
+                  ₹{Number(course.price).toFixed(2)}
                 </span>
               </div>
 
