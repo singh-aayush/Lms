@@ -31,9 +31,9 @@ export default function MyCourses() {
     fetchCourses();
   }, []);
 
-  // const handlePlay = (courseId) => {
-  //   navigate(`/course/${courseId}`);
-  // };
+  const handlePlay = (courseId) => {
+    navigate(`/dashboard/course-player/${courseId}`);
+  };
 
   const handleCardClick = (courseId, courseTitle) => {
     navigate(`/dashboard/course-editor/${courseId}`, { state: { courseTitle } });
@@ -71,7 +71,7 @@ export default function MyCourses() {
                 <button
                   onClick={(e) => {
                     e.stopPropagation(); // Prevent card click event
-                    // handlePlay(course._id);
+                    handlePlay(course._id);
                   }}
                   className="absolute -bottom-4 right-0 bg-[#49BBBD] text-white p-3 rounded-full shadow-lg hover:scale-120 cursor-pointer z-50"
                   title="Play Course"

@@ -13,6 +13,7 @@ import ProtectedRoute from "./Components/protectedRoute";
 import CourseEditor from './Components/Instructor_myCourse_component/contents_components/contents';
 import AssessmentsList from './Components/Instructor_myCourse_component/contents_components/Instructor_assignmentPage_component/allAssignment'; // Import AssessmentsList
 import AssessmentEditor from "./Components/Instructor_myCourse_component/contents_components/Instructor_assignmentPage_component/assignmentEditor";
+import CoursePlayer from "./Components/Instructor_myCourse_component/CoursePlayer";
 import { isAuthenticated } from "./utils/auth";
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
         >
           <Route index element={<Home />} />
           <Route path="my-courses" element={<MyCourses />} />
+          <Route path="course-player/:courseId" element={<CoursePlayer />} />
           <Route path="assignments" element={<Assignment />} />
           <Route path="settings" element={<Settings />} />
           <Route path="create-course" element={<CreateCourse />} />

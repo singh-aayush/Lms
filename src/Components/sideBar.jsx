@@ -166,7 +166,9 @@ export default function Sidebar({ onLinkClick }) {
         </nav>
       </div>
       <div className="mt-4 sm:mt-6">
-        <div className="flex items-center gap-2 sm:gap-3 pl-2 sm:pl-4">
+        <NavLink
+            to="/dashboard/settings">
+          <div className="flex items-center gap-2 sm:gap-3 pl-2 sm:pl-4">
           {instructor.avatar ? (
             <img
               src={instructor.avatar}
@@ -194,7 +196,9 @@ export default function Sidebar({ onLinkClick }) {
               </>
             )}
           </div>
-        </div>
+          </div>
+        </NavLink>
+
         <div className="mt-3 sm:mt-4 space-y-1 sm:space-y-2">
           <NavLink
             to="/dashboard/settings"
